@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, ValidationError
 from datetime import datetime
+
+from pydantic import BaseModel, Field, ValidationError
 
 
 class SpaceStation(BaseModel):
@@ -38,7 +39,7 @@ def main() -> None:
             crew_size=6,
             power_level=85.5,
             oxygen_level=92.3,
-            last_maintenance=datetime(2026, 11, 12)
+            last_maintenance=datetime(2026, 11, 12),
         )
         space_station_print(valid_data)
         print("\n========================================")
@@ -48,7 +49,7 @@ def main() -> None:
             crew_size=21,
             power_level=85.5,
             oxygen_level=92.3,
-            last_maintenance=datetime(2026, 11, 12)
+            last_maintenance=datetime(2026, 11, 12),
         )
         space_station_print(invalid_data)
     except ValidationError as error:

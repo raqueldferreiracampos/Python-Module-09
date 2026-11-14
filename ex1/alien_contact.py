@@ -1,5 +1,6 @@
 from datetime import datetime
 from enum import Enum
+
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
@@ -30,8 +31,8 @@ class AlienContact(BaseModel):
         if self.contact_type == ContactType.PHYSICAL and not self.is_verified:
             raise ValueError("Physical contact reports must be verified")
         if (
-            self.contact_type == ContactType.TELEPATHIC
-            and self.witness_count < 3
+            self.contact_type == ContactType.TELEPATHIC and
+            self.witness_count < 3
         ):
             raise ValueError(
                 "Telepathic contact requires at least 3 witnesses"

@@ -1,9 +1,10 @@
 from datetime import datetime
 from enum import Enum
-from pydantic import BaseModel, Field, model_validator, ValidationError
+
+from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
-class CrewRanks(Enum):
+class CrewRank(Enum):
     CADET = "cadet"
     OFFICER = "officer"
     LIEUTENANT = "lieutenant"
@@ -14,7 +15,7 @@ class CrewRanks(Enum):
 class CrewMember(BaseModel):
     member_id: str = Field(min_length=3, max_length=10)
     name: str = Field(min_length=2, max_length=50)
-    rank: CrewRanks
+    rank: CrewRank
     age: int = Field(ge=18, le=80)
     specialization: str = Field(min_length=3, max_length=30)
     years_experience: int = Field(ge=0, le=50)
@@ -35,11 +36,11 @@ class SpaceMission(BaseModel):
     def mission_validator(self) -> "SpaceMission":
         if not self.mission_id.startswith("M"):
             raise ValueError("Mission ID must start with 'M'")
-        if not any(i.rank in [CrewRanks.COMMANDER,
-                              CrewRanks.CAPTAIN] for i in self.crew):
+        if not any(i.rank in [CrewRank.COMMANDER,
+                              CrewRank.CAPTAIN] for i in self.crew):
             raise ValueError(
                 "Mission must have at least one Commander or Captain"
-                )
+            )
         if self.duration_days > 365:
             ok = 0
             for i in self.crew:
@@ -47,7 +48,7 @@ class SpaceMission(BaseModel):
                     ok += 1
             if ok < len(self.crew) / 2:
                 raise ValueError(
-                    r"Long missions (> 365 days) need 50%"
+                    "Long missions (> 365 days) need 50% "
                     "experienced crew (5+ years)"
                 )
         for i in self.crew:
@@ -64,7 +65,7 @@ def main() -> None:
         sarah = CrewMember(
             member_id="A000",
             name="Sarah Connor",
-            rank=CrewRanks.COMMANDER,
+            rank=CrewRank.COMMANDER,
             age=40,
             specialization="Mission Command",
             years_experience=6
@@ -72,7 +73,7 @@ def main() -> None:
         john = CrewMember(
             member_id="A001",
             name="John Smith",
-            rank=CrewRanks.LIEUTENANT,
+            rank=CrewRank.LIEUTENANT,
             age=40,
             specialization="Navigation",
             years_experience=6
@@ -80,7 +81,7 @@ def main() -> None:
         alice = CrewMember(
             member_id="A002",
             name="Alice Johnson",
-            rank=CrewRanks.OFFICER,
+            rank=CrewRank.OFFICER,
             age=40,
             specialization="Engineering",
             years_experience=6

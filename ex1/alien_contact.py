@@ -4,10 +4,10 @@ from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
 class ContactType(Enum):
-    radio = "radio"
-    visual = "visual"
-    physical = "physical"
-    telepathic = "telepathic"
+    RADIO = "radio"
+    VISUAL = "visual"
+    PHYSICAL = "physical"
+    TELEPATHIC = "telepathic"
 
 
 class AlienContact(BaseModel):
@@ -27,10 +27,10 @@ class AlienContact(BaseModel):
             raise ValueError(
                 "Contact ID must start with 'AC' (Alien Contact)"
             )
-        if self.contact_type == ContactType.physical and not self.is_verified:
+        if self.contact_type == ContactType.PHYSICAL and not self.is_verified:
             raise ValueError("Physical contact reports must be verified")
         if (
-            self.contact_type == ContactType.telepathic
+            self.contact_type == ContactType.TELEPATHIC
             and self.witness_count < 3
         ):
             raise ValueError(
@@ -52,7 +52,7 @@ def main() -> None:
             contact_id="AC_2024_001",
             timestamp=datetime(2026, 11, 5),
             location="Area 51, Nevada",
-            contact_type=ContactType.radio,
+            contact_type=ContactType.RADIO,
             signal_strength=8.5,
             duration_minutes=45,
             witness_count=5,
@@ -71,7 +71,7 @@ def main() -> None:
             contact_id="AC_2024_002",
             timestamp=datetime(2026, 11, 5),
             location="Area 51, Nevada",
-            contact_type=ContactType.telepathic,
+            contact_type=ContactType.TELEPATHIC,
             signal_strength=8.5,
             duration_minutes=45,
             witness_count=1,
